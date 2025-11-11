@@ -1,10 +1,85 @@
 import productStore from "../Store/product.js";
+import { navigate } from "../router.js";
 import SearchInput from "../components/product/search/SearchInput.js";
 import Breadcrumb from "../components/product/search/Breadcrumb.js";
 import CategoryButtons from "../components/product/search/CategoryButtons.js";
 import FilterOptions from "../components/product/search/FilterOptions.js";
 import productList from "../components/product/list.js";
 import skeleton from "../components/product/skeleton.js";
+
+let eventsInitialized = false;
+
+/**
+ * 검색, 필터, 카테고리 등 모든 이벤트 리스너를 설정합니다.
+ * 이벤트 위임을 사용하여 body에 한 번만 리스너를 등록합니다.
+ */
+function setupEventListeners() {
+  if (eventsInitialized) return;
+
+  document.body.addEventListener("click", (e) => {
+    const productSearchFilter = e.target.closest("#product-search-filter");
+    if (!productSearchFilter) return;
+
+    // --- 카테고리 버튼 클릭 처리 ---
+    const categoryBtn = e.target.closest(".category1-filter-btn, .category2-filter-btn");
+    if (categoryBtn) {
+      const { category1, category2 } = categoryBtn.dataset;
+      const params = new URLSearchParams(window.location.search);
+      params.set("page", 1); // 필터 변경 시 1페이지로 리셋
+      if (category1) params.set("category1", category1);
+      if (category2) {
+        params.set("category2", category2);
+      } else {
+        params.delete("category2"); // 1뎁스 카테고리 클릭 시 2뎁스는 초기화
+      }
+      navigate(`/?${params.toString()}`);
+      return;
+    }
+
+    // --- 브레드크럼 클릭 처리 ---
+    const breadcrumbBtn = e.target.closest("[data-breadcrumb]");
+    if (breadcrumbBtn) {
+      const { breadcrumb } = breadcrumbBtn.dataset;
+      const params = new URLSearchParams(window.location.search);
+      params.set("page", 1);
+      if (breadcrumb === "reset") {
+        params.delete("category1");
+        params.delete("category2");
+      } else if (breadcrumb === "category1") {
+        params.delete("category2");
+      }
+      navigate(`/?${params.toString()}`);
+      return;
+    }
+  });
+
+  // --- 검색 입력 처리 ---
+  document.body.addEventListener("keydown", (e) => {
+    if (e.target.id === "search-input" && e.key === "Enter") {
+      e.preventDefault(); // form 전송 방지
+      const params = new URLSearchParams(window.location.search);
+      params.set("page", 1);
+      params.set("search", e.target.value);
+      navigate(`/?${params.toString()}`);
+    }
+  });
+
+  // --- 개수/정렬 필터 변경 처리 ---
+  document.body.addEventListener("change", (e) => {
+    if (e.target.id === "limit-select" || e.target.id === "sort-select") {
+      const params = new URLSearchParams(window.location.search);
+      params.set("page", 1);
+      if (e.target.id === "limit-select") {
+        params.set("limit", e.target.value);
+      } else {
+        params.set("sort", e.target.value);
+      }
+      navigate(`/?${params.toString()}`);
+    }
+  });
+
+  eventsInitialized = true;
+}
 
 // 검색/필터 영역을 렌더링하는 헬퍼 함수
 function renderSearchFilter(params, categories) {
@@ -22,6 +97,9 @@ function renderSearchFilter(params, categories) {
 }
 
 export function ProductListPage(queryParams) {
+  // 이벤트 리스너는 한 번만 설정
+  setupEventListeners();
+
   /**
    * 랜더링 함수 (스토어 업데이트 시 실행)
    * */

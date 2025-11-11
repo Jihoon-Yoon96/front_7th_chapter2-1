@@ -6,8 +6,8 @@ export default function CategoryButtons({ categories = {}, category1, category2 
     return '<div class="text-sm text-gray-500 italic">카테고리 로딩 중...</div>';
   }
 
+  // 1뎁스 카테고리 그리기
   if (!category1) {
-    // 1-depth (category1) 보여주기
     currentCategories = categories;
     categoryButtonsHTML = Object.keys(currentCategories)
       .map((cat1) => {
@@ -17,8 +17,9 @@ export default function CategoryButtons({ categories = {}, category1, category2 
                 </button>`;
       })
       .join("");
-  } else if (categories[category1] && !category2) {
-    // 2-depth (category2) 보여주기
+  }
+  // 2뎁스 카테고리 그리기
+  else if (categories[category1] && !category2) {
     currentCategories = categories[category1];
     categoryButtonsHTML = Object.keys(currentCategories)
       .map((cat2) => {
@@ -28,8 +29,9 @@ export default function CategoryButtons({ categories = {}, category1, category2 
                 </button>`;
       })
       .join("");
-  } else if (categories[category1] && category2) {
-    // 2-depth (category2) 보여주기 (선택된 상태)
+  }
+  // 2 뎁스 카테고리 그리기 (2뎁스 카테고리 활성화)
+  else if (categories[category1] && category2) {
     currentCategories = categories[category1];
     categoryButtonsHTML = Object.keys(currentCategories)
       .map((cat2) => {
