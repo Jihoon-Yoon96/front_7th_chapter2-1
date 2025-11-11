@@ -1,7 +1,25 @@
 import productStore from "../Store/product.js";
-import searchForm from "../components/product/searchForm.js";
+import SearchInput from "../components/product/search/SearchInput.js";
+import Breadcrumb from "../components/product/search/Breadcrumb.js";
+import CategoryButtons from "../components/product/search/CategoryButtons.js";
+import FilterOptions from "../components/product/search/FilterOptions.js";
 import productList from "../components/product/list.js";
 import skeleton from "../components/product/skeleton.js";
+
+// 검색/필터 영역을 렌더링하는 헬퍼 함수
+function renderSearchFilter(params, categories) {
+  const { search, category1, category2, limit, sort } = params;
+  return `
+    ${SearchInput({ search })}
+    <div class="space-y-3">
+        <div class="space-y-2">
+            ${Breadcrumb({ category1, category2 })}
+            ${CategoryButtons({ categories, category1, category2 })}
+        </div>
+        ${FilterOptions({ limit, sort })}
+    </div>
+  `;
+}
 
 export function ProductListPage(queryParams) {
   /**
@@ -9,23 +27,29 @@ export function ProductListPage(queryParams) {
    * */
   const handleStoreUpdate = () => {
     // 이 페이지가 DOM에 실제로 존재하는지 확인
-    const productListPage = document.getElementById("product-list-page");
-    if (!productListPage) {
-      return;
-    }
+    // const productListPage = document.getElementById("product-list-page");
+    // if (!productListPage) {
+    //   return;
+    // }
 
     // 상품정보, 로딩여부, 페이징 데이터 state 가져오기
     const { products, loading, pagination, params, categories } = productStore.getState();
     const productSearchFilter = document.getElementById("product-search-filter");
     const productListContainer = document.getElementById("product-list-container");
 
+    if (productSearchFilter) {
+      productSearchFilter.innerHTML = renderSearchFilter(params, categories);
+    }
+
     if (productListContainer) {
-      productSearchFilter.innerHTML = searchForm({ params, categories });
       // 로딩 중이고, 기존 상품이 없을 때만 스켈레톤 UI 표시
       if (loading && products.length === 0) {
         productListContainer.innerHTML = skeleton();
       } else {
-        productListContainer.innerHTML = productList({ list: products, hasNext: pagination.hasNext });
+        productListContainer.innerHTML = productList({
+          list: products,
+          hasNext: pagination.hasNext,
+        });
       }
     }
   };
@@ -51,11 +75,13 @@ export function ProductListPage(queryParams) {
    * 처음에는 skeleton 호출
    * 데이터 로딩이 완료시, 구독된 handleStoreUpdate 함수 실행 (상품 목록 채워진 버전으로 리렌더링).
    * */
-  // const initialState = productStore.getState();
+  const initialState = productStore.getState();
   return `
       <main id="product-list-page" class="max-w-md mx-auto px-4 py-4">
         <!-- 검색 및 필터 -->
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4" id="product-search-filter"></div>
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4" id="product-search-filter">
+            ${renderSearchFilter(initialState.params, initialState.categories)}
+        </div>
         <!-- 상품 목록 -->
         <div id="product-list-container" class="mb-6">
           ${skeleton()}
