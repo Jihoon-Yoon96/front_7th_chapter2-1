@@ -103,6 +103,14 @@ const createRouter = () => {
       handlePathChange();
     },
 
+    /**
+     * 현재 페이지를 다시 렌더링합니다.
+     * URL 변경 없이 현재 라우트의 컴포넌트를 다시 마운트합니다.
+     */
+    renderCurrentPage() {
+      handlePathChange();
+    },
+
     start() {
       if (!document.getElementById("root")) {
         document.body.innerHTML = '<div id="root"></div>';

@@ -57,7 +57,7 @@ class Product {
   }
 
   #notify() {
-    console.log("데이터 변화 감지!");
+    console.log("Product Store - 데이터 변화 감지!");
     this.#observer.forEach((callback) => callback());
   }
   /**
