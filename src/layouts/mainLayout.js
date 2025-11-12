@@ -1,5 +1,6 @@
 import header from "../components/common/header.js";
 import footer from "../components/common/footer.js";
+import CartModal from "../components/cart/CartModal.js";
 
 export default function mainLayout(children) {
   return `
@@ -7,6 +8,7 @@ export default function mainLayout(children) {
       ${header({ cartNum: 4 })}
       ${children()}
       ${footer()}
+      ${CartModal()}
     </div>
   `;
 }

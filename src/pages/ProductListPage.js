@@ -7,6 +7,7 @@ import FilterOptions from "../components/product/search/FilterOptions.js";
 import productCard from "../components/product/card.js";
 import skeleton from "../components/product/skeleton.js";
 import spiningLoading from "../components/product/spiningLoading.js";
+import { cartStore } from "../Store/cart.js"; // Import cartStore
 
 let eventsInitialized = false;
 
@@ -24,6 +25,22 @@ function setupEventListeners() {
     if (e.target.closest("#retry-fetch")) {
       const { params } = productStore.getState();
       productStore.setParams(params);
+      return;
+    }
+
+    /**
+     * 장바구니 담기 버튼 클릭 이벤트
+     * */
+    const addToCartBtn = e.target.closest(".add-to-cart-btn");
+    if (addToCartBtn) {
+      const productId = addToCartBtn.dataset.productId;
+      const { products } = productStore.getState();
+      const product = products.find((p) => p.id === productId);
+
+      if (product) {
+        cartStore.addItem(product, 1);
+        // toastStore.showToast("장바구니에 상품이 추가되었습니다.", "success"); // Removed toast call
+      }
       return;
     }
 
