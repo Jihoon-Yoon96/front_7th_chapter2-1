@@ -35,7 +35,8 @@ function setupEventListeners() {
     if (addToCartBtn) {
       const productId = addToCartBtn.dataset.productId;
       const { products } = productStore.getState();
-      const product = products.find((p) => p.id === productId);
+      const product = products.find((p) => p.productId === productId);
+      console.log("addToCartBtn", productId, products);
 
       if (product) {
         cartStore.addItem(product, 1);

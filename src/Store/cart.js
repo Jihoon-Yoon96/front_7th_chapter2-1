@@ -71,6 +71,7 @@ class Cart {
       const newItem = { ...product, quantity, isChecked: true };
       updatedItems = [...this.#state.items, newItem];
     }
+    console.log("Cart Store - 장바구니 추가!", updatedItems);
     this.#setState({ items: updatedItems });
   }
 
