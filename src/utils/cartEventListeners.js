@@ -90,14 +90,14 @@ function setupCartEventListeners() {
       const itemCheckbox = e.target.closest(".cart-item-checkbox");
       if (itemCheckbox) {
         const productId = itemCheckbox.dataset.productId;
-        cartStore.cartItemChecked(productId); // 메서드 이름 변경
+        cartStore.cartItemChecked(productId);
         return;
       }
 
       // 전체 선택 체크박스 토글
       const selectAllCheckbox = e.target.closest("#cart-modal-select-all-checkbox");
       if (selectAllCheckbox) {
-        cartStore.cartAllItemsChecked(selectAllCheckbox.checked); // 메서드 이름 변경
+        cartStore.cartAllItemsChecked(selectAllCheckbox.checked);
         return;
       }
     });

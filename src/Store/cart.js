@@ -10,7 +10,7 @@
  * */
 
 const initialState = {
-  items: [], // { id, name, imageUrl, price, quantity, isChecked }
+  items: [], // { productId, title, image, lprice, quantity, isChecked }
 };
 
 class Cart {
