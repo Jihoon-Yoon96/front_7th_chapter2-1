@@ -18,6 +18,15 @@ function setupEventListeners() {
   if (eventsInitialized) return;
 
   document.body.addEventListener("click", (e) => {
+    /**
+     * 재시도 버튼 클릭 이벤트
+     * */
+    if (e.target.closest("#retry-fetch")) {
+      const { params } = productStore.getState();
+      productStore.setParams(params);
+      return;
+    }
+
     const productSearchFilter = e.target.closest("#product-search-filter");
     if (!productSearchFilter) return;
 
@@ -96,7 +105,7 @@ function renderSearchFilter(params, categories) {
 
 export function ProductListPage(queryParams) {
   // 이벤트 리스너는 한 번만 설정
-  // refactor : onMount에서 설
+  // refactor : onMount에서 설정
   // setupEventListeners();
 
   /**
@@ -107,7 +116,7 @@ export function ProductListPage(queryParams) {
     if (!productListPage) return;
 
     // 상품정보, 로딩여부, 페이징 데이터 state 가져오기
-    const { products, loading, pagination, params, categories } = productStore.getState();
+    const { products, loading, pagination, params, categories, error } = productStore.getState();
 
     const productSearchFilter = document.getElementById("product-search-filter");
     if (productSearchFilter) {
@@ -121,6 +130,26 @@ export function ProductListPage(queryParams) {
     }
 
     const grid = document.getElementById("products-grid");
+    const footerIndicator = document.getElementById("list-footer-indicator");
+
+    if (error) {
+      if (grid) {
+        grid.innerHTML = `
+          <div class="col-span-2 text-center py-10">
+            <p class="text-red-500 font-bold">데이터를 불러오는데 실패했습니다.</p>
+            <p class="text-gray-500 text-sm mb-4">${error.message || "알 수 없는 오류가 발생했습니다."}</p>
+            <button id="retry-fetch" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
+              재시도
+            </button>
+          </div>
+        `;
+      }
+      if (footerIndicator) {
+        footerIndicator.innerHTML = "";
+      }
+      return;
+    }
+
     if (grid) {
       if (params.page === 1) {
         grid.innerHTML = loading && products.length === 0 ? skeleton() : products.map((p) => productCard(p)).join("");
@@ -134,7 +163,7 @@ export function ProductListPage(queryParams) {
       }
     }
 
-    const footerIndicator = document.getElementById("list-footer-indicator");
+    // const footerIndicator = document.getElementById("list-footer-indicator");
     if (footerIndicator) {
       if (loading && params.page > 1) {
         footerIndicator.innerHTML = spiningLoading();
