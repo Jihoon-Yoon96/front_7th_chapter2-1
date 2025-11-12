@@ -147,36 +147,45 @@ export function ProductListPage(queryParams) {
   };
 
   const onMount = () => {
-    // 1. 이벤트 리스너 설정
+    // 이벤트 리스너 설정
     setupEventListeners();
 
-    // 2. 스토어 구독
+    // 스토어 구독
     const unsubscribe = productStore.subscribe(handleStoreUpdate);
 
-    // 3. IntersectionObserver 설정 (무한 스크롤)
+    // IntersectionObserver 구독 로직 (무한 스크롤)
     const observer = new IntersectionObserver(
+      // 스크롤 최하단 감지시 실행시킬 콜백함수 정의
       (entries) => {
+        // 관찰 대상("list-footer-indicator") 정보 가져오기
+        // entries 타입이 배열이지만, 보통 길이가 1이이서 직접 인덱싱해도 무관
         const firstEntry = entries[0];
         const { loading, pagination } = productStore.getState();
+
+        // firstEntry.isIntersecting : 관찰 대상("list-footer-indicator")가 화면상 보이고 있는지 체크 (보이면 true)
         if (firstEntry.isIntersecting && !loading && pagination.hasNext) {
+          // 다음 상품 목록 가져오기
           productStore.fetchNextPage();
         }
       },
+      // 콜백함수 실행 시점 지정
+      // 관찰 대상("list-footer-indicator")이 화면상 10%이상 보이기 시작하면 콜백함수(다음 상품목록 호출 함수) 실행
       { threshold: 0.1 },
     );
 
     const target = document.getElementById("list-footer-indicator");
     if (target) {
+      // interserctionObserver 구독 시작
       observer.observe(target);
     }
 
-    // 4. 초기 데이터 로드
+    // 초기 데이터 로드
     // setParams는 state를 변경하고
     // setParams의 내부 로직 중 this.#setState에서 notify()를 통해 리렌더링 실시 (handleStoreUpdate)
     productStore.setParams(queryParams);
     productStore.getCategories();
 
-    // 5. unmount 시 옵저버 패턴 구독 취소 (product 스토어 + intersectionObserver)
+    // unmount 시 옵저버 패턴 구독 취소 함수 리턴 (product 스토어 + intersectionObserver)
     return () => {
       unsubscribe();
       observer.disconnect();
