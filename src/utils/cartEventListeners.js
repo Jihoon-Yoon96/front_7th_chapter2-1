@@ -3,18 +3,18 @@ import { router } from "../Router/router.js"; // router를 올바르게 임포�
 
 function setupCartEventListeners() {
   const cartModal = document.querySelector(".cart-modal");
-  const cartIconBtn = document.getElementById("cart-icon-btn");
+  // const cartIconBtn = document.getElementById("cart-icon-btn");
   const cartModalCloseBtn = document.getElementById("cart-modal-close-btn");
   const cartModalOverlay = document.querySelector(".cart-modal-overlay");
 
   // 장바구니 모달 열기
-  if (cartIconBtn) {
-    cartIconBtn.addEventListener("click", () => {
-      if (cartModal) {
-        cartModal.classList.remove("hidden");
-      }
-    });
-  }
+  // if (cartIconBtn) {
+  //   cartIconBtn.addEventListener("click", () => {
+  //     if (cartModal) {
+  //       cartModal.classList.remove("hidden");
+  //     }
+  //   });
+  // }
 
   // 장바구니 모달 닫기
   const closeCartModal = () => {
@@ -106,6 +106,7 @@ function setupCartEventListeners() {
   // 장바구니 스토어 변경 구독하여 모달 내용 다시 렌더링
   cartStore.subscribe(() => {
     // 상태 변경을 반영하기 위해 전체 모달 내용을 다시 렌더링
+    // handlePathChange를 호출해야하지만, 캡슐화돼있어 외부에서 호출할 수 있는 함수 만듦
     router.renderCurrentPage();
   });
 }
