@@ -63,17 +63,18 @@ class Cart {
    * @param {number} quantity - 추가할 수량
    */
   addItem(product, quantity = 1) {
-    const existingItemIndex = this.#state.items.findIndex((item) => item.id === product.id);
+    const existingItemIndex = this.#state.items.findIndex((item) => item.productId === product.productId);
     let updatedItems;
 
     if (existingItemIndex > -1) {
       updatedItems = [...this.#state.items];
       updatedItems[existingItemIndex].quantity += quantity;
+      console.log("Cart Store - 기존 장바구니 상품의 갯수 추가!", updatedItems);
     } else {
       const newItem = { ...product, quantity, isChecked: true };
       updatedItems = [...this.#state.items, newItem];
+      console.log("Cart Store - 신규 장바구니 상품 추가!", updatedItems);
     }
-    console.log("Cart Store - 장바구니 추가!", updatedItems);
     this.#setState({ items: updatedItems });
   }
 
