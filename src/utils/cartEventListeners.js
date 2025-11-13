@@ -13,17 +13,13 @@ export function cartModalControl() {
   // 장바구니 모달 열기
   if (cartIconBtn) {
     cartIconBtn.addEventListener("click", () => {
-      if (cartModal) {
-        cartModal.classList.remove("hidden");
-      }
+      cartStore.toggleCartModal(true);
     });
   }
 
   // 장바구니 모달 닫기 함수
   const closeCartModal = () => {
-    if (cartModal) {
-      cartModal.classList.add("hidden");
-    }
+    cartStore.toggleCartModal(false);
   };
 
   if (cartModalCloseBtn) {

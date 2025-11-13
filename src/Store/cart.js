@@ -11,6 +11,7 @@
 
 const initialState = {
   items: [], // { productId, title, image, lprice, quantity, isChecked }
+  isCartOpen: false,
 };
 
 class Cart {
@@ -55,6 +56,14 @@ class Cart {
   unsubscribe(callback) {
     console.log("Cart Store - unsubscribe!", callback);
     this.#observer.delete(callback);
+  }
+
+  /**
+   * 장바구니 모달의 열림/닫힘 상태 제어
+   * @param {boolean} isOpen - 모달 노출/비노출 상태값
+   */
+  toggleCartModal(isOpen) {
+    this.#setState({ isCartOpen: isOpen });
   }
 
   /**
