@@ -1,3 +1,5 @@
+import { renderHeader } from "../layouts/headerRenderer.js";
+
 const createRouter = () => {
   let routes = [];
   let notFoundComponent = () => "<h1>404 Not Found</h1>";
@@ -26,6 +28,9 @@ const createRouter = () => {
       currentOnUnmount();
       currentOnUnmount = null;
     }
+
+    // 경로가 변경될 때마다 헤더를 다시 렌더링
+    renderHeader();
 
     const path = window.location.pathname;
     const route = routes.find((r) => r.path.test(path));
