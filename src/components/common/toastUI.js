@@ -1,26 +1,32 @@
 export function toastUI(props) {
-  let message = props?.message || "메세지 없음";
-  let status = props?.status || "success"; // success : 성공(초록색), info : 알림(파란색), fail : 실패(빨간색)
-  let color = "";
-  switch (status) {
+  let message = props?.message || "메시지 없음";
+  let type = props?.type || "info"; // 'success', 'info', 'error'
+
+  let bgColorClass = "";
+  let iconPath = "";
+  switch (type) {
     case "success":
-      color = "green";
+      bgColorClass = "bg-green-600";
+      iconPath = "M5 13l4 4L19 7"; // Checkmark
       break;
     case "info":
-      color = "blue";
+      bgColorClass = "bg-blue-600";
+      iconPath = "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"; // Info circle
       break;
-    case "fail":
-      color = "red";
+    case "error":
+      bgColorClass = "bg-red-600";
+      iconPath = "M6 18L18 6M6 6l12 12"; // X mark
       break;
     default:
-      color = "green";
+      bgColorClass = "bg-gray-600";
+      iconPath = "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z";
   }
-  console.log(message);
+
   return `
-      <div class="bg-${color}-600 text-white px-4 py-3 rounded-lg shadow-lg flex items-center space-x-2 max-w-sm">
+      <div class="${bgColorClass} text-white px-4 py-3 rounded-lg shadow-lg flex items-center space-x-2 max-w-sm">
         <div class="flex-shrink-0">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${iconPath}"></path>
           </svg>
         </div>
         <p class="text-sm font-medium">${message}</p>
