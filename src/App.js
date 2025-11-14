@@ -4,6 +4,7 @@ import { NotFoundPage } from "./pages/NotFoundPage.js";
 import { renderHeader } from "./layouts/headerRenderer.js";
 import { renderFooter } from "./layouts/footerRenderer.js";
 import { renderCartModal } from "./layouts/cartModalRenderer.js";
+import { renderToast } from "./layouts/toastRenderer.js"; // 토스트 렌더러 임포트
 import { router } from "./Router/router.js";
 
 /**
@@ -32,6 +33,7 @@ function renderInitialLayout() {
   renderHeader();
   renderFooter();
   renderCartModal();
+  renderToast(); // 토스트 렌더러 호출
 }
 
 export default function App() {

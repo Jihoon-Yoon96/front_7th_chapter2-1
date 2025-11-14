@@ -7,7 +7,8 @@ import FilterOptions from "../components/product/search/FilterOptions.js";
 import productCard from "../components/product/card.js";
 import skeleton from "../components/product/skeleton.js";
 import spiningLoading from "../components/product/spiningLoading.js";
-import { cartStore } from "../Store/cart.js";
+import { cartStore } from "../Store/cart.js"; // Import cartStore
+import { toastStore } from "../Store/toast.js"; // toastStore 임포트
 
 let eventsInitialized = false;
 
@@ -39,15 +40,8 @@ function setupEventListeners() {
       console.log("addToCartBtn", productId, products);
 
       if (foundProduct) {
-        // const productToAdd = {
-        //   id: foundProduct.productId, // items.json의 productId를 id로 사용
-        //   name: foundProduct.title, // items.json의 title을 name으로 사용
-        //   imageUrl: foundProduct.image, // items.json의 image를 imageUrl로 사용
-        //   price: parseInt(foundProduct.lprice, 10), // lprice를 정수로 변환
-        // };
-        // cartStore.addItem(productToAdd, 1);
         cartStore.addItem(foundProduct, 1);
-        // toastStore.showToast("장바구니에 상품이 추가되었습니다.", "success"); // Removed toast call
+        toastStore.showToast("장바구니에 상품이 추가되었습니다.", "success"); // 토스트 메시지 추가
       }
       return;
     }

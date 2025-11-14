@@ -1,4 +1,5 @@
 import { cartStore } from "../Store/cart.js";
+import { toastStore } from "../Store/toast.js"; // toastStore 임포트
 
 /**
  * 장바구니 모달을 열고 닫는 이벤트 리스너 추가용 함수
@@ -54,6 +55,7 @@ export function cartProductControl() {
     if (removeBtn) {
       const productId = removeBtn.dataset.productId;
       cartStore.removeItem(productId);
+      toastStore.showToast("상품이 장바구니에서 제거되었습니다.", "info");
       return;
     }
 
@@ -87,6 +89,7 @@ export function cartProductControl() {
     const clearCartBtn = e.target.closest("#cart-modal-clear-cart-btn");
     if (clearCartBtn) {
       cartStore.clearCart();
+      toastStore.showToast("장바구니가 비워졌습니다.", "info");
       return;
     }
 
@@ -94,6 +97,7 @@ export function cartProductControl() {
     const removeSelectedBtn = e.target.closest("#cart-modal-remove-selected-btn");
     if (removeSelectedBtn) {
       cartStore.removeSelectedItems();
+      toastStore.showToast("선택된 상품들이 제거되었습니다.", "info");
       return;
     }
   });
