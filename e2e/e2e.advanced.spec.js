@@ -358,7 +358,7 @@ test.describe("E2E: 쇼핑몰 전체 사용자 시나리오 (심화과제)", () 
         .locator('xpath=ancestor::*[contains(@class, "product-card")]');
       await productCard.locator("img").click();
 
-      await expect(page).toHaveURL("/product/85067212996");
+      await expect(page).toHaveURL("/front_7th_chapter2-1/product/85067212996");
       await expect(
         page.locator('h1:text("PVC 투명 젤리 쇼핑백 1호 와인 답례품 구디백 비닐 손잡이 미니 간식 선물포장")'),
       ).toBeVisible();
@@ -366,28 +366,28 @@ test.describe("E2E: 쇼핑몰 전체 사용자 시나리오 (심화과제)", () 
       const relatedProducts = page.locator(".related-product-card");
       await relatedProducts.first().click();
 
-      await expect(page).toHaveURL("/product/86940857379");
+      await expect(page).toHaveURL("/front_7th_chapter2-1/product/86940857379");
       await expect(
         page.locator('h1:text("샷시 풍지판 창문 바람막이 베란다 문 틈막이 창틀 벌레 차단 샤시 방충망 틈새막이")'),
       ).toBeVisible();
 
       // 브라우저 뒤로가기
       await page.goBack();
-      await expect(page).toHaveURL("/product/85067212996");
+      await expect(page).toHaveURL("/front_7th_chapter2-1/product/85067212996");
       await expect(
         page.locator('h1:text("PVC 투명 젤리 쇼핑백 1호 와인 답례품 구디백 비닐 손잡이 미니 간식 선물포장")'),
       ).toBeVisible();
 
       // 브라우저 앞으로가기
       await page.goForward();
-      await expect(page).toHaveURL("/product/86940857379");
+      await expect(page).toHaveURL("/front_7th_chapter2-1/product/86940857379");
       await expect(
         page.locator('h1:text("샷시 풍지판 창문 바람막이 베란다 문 틈막이 창틀 벌레 차단 샤시 방충망 틈새막이")'),
       ).toBeVisible();
 
       await page.goBack();
       await page.goBack();
-      await expect(page).toHaveURL("/");
+      await expect(page).toHaveURL("/front_7th_chapter2-1/");
       const firstProductCard = page.locator(".product-card").first();
       await expect(firstProductCard.locator("img")).toBeVisible();
 
@@ -404,7 +404,7 @@ test.describe("E2E: 쇼핑몰 전체 사용자 시나리오 (심화과제)", () 
     // 404 페이지 테스트
     test("존재하지 않는 페이지 접근 시 404 페이지가 표시된다", async ({ page }) => {
       // 존재하지 않는 경로로 이동
-      await page.goto("/non-existent-page");
+      await page.goto("/front_7th_chapter2-1/non-existent-page");
       await page.waitForTimeout(1000);
 
       // 404 페이지 확인
